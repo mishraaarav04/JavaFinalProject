@@ -1,0 +1,34 @@
+name: Build Windows EXE
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Build JAR
+        run: mvn package
+
+      - name: Run jpackage
+        run: |
+          jpackage `
+            --input target `
+            --main-jar your-app-1.0-SNAPSHOT.jar `
+            --main-class com.example.Main `
+            --name "MP3 Player" `
+            --type exe `
+            --add-modules javafx.controls,javafx.media,javafx.fxml
+
+      - name: Upload EXE
+        uses: actions/upload-artifact@v3
+        with:
+          name: mp3-player-exe
+          path: "MP3 Player*.exe"
