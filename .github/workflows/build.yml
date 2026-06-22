@@ -8,22 +8,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Java
+      - name: Set up Java with JavaFX
         uses: actions/setup-java@v4
         with:
           java-version: '21'
-          distribution: 'temurin'
-
-      - name: Download JavaFX SDK
-        run: |
-          curl -L https://download2.gluonhq.com/openjfx/21.0.2/openjfx-21.0.2_windows-x64_bin-sdk.zip -o javafx.zip
-          Expand-Archive javafx.zip -DestinationPath .
+          distribution: 'liberica'
+          java-package: jdk+fx
 
       - name: Build JAR
         run: mvn package
-
-      - name: List target directory
-        run: dir target
 
       - name: Run jpackage
         run: |
@@ -33,7 +26,6 @@ jobs:
             --main-class com.example.Main `
             --name "MP3 Player" `
             --type exe `
-            --module-path openjfx-21.0.2_windows-x64_bin-sdk/javafx-sdk-21.0.2/lib `
             --add-modules javafx.controls,javafx.media,javafx.fxml
 
       - name: Upload EXE
