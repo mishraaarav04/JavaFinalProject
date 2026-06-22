@@ -6,25 +6,34 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Set up Java
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'temurin'
 
+      - name: Download JavaFX SDK
+        run: |
+          curl -L https://download2.gluonhq.com/openjfx/21.0.2/openjfx-21.0.2_windows-x64_bin-sdk.zip -o javafx.zip
+          Expand-Archive javafx.zip -DestinationPath .
+
       - name: Build JAR
         run: mvn package
+
+      - name: List target directory
+        run: dir target
 
       - name: Run jpackage
         run: |
           jpackage `
             --input target `
-            --main-jar mp3-player-1.0-SNAPSHOT.jar `
+            --main-jar demo-1.0-SNAPSHOT.jar `
             --main-class com.example.Main `
             --name "MP3 Player" `
             --type exe `
+            --module-path openjfx-21.0.2_windows-x64_bin-sdk/javafx-sdk-21.0.2/lib `
             --add-modules javafx.controls,javafx.media,javafx.fxml
 
       - name: Upload EXE
