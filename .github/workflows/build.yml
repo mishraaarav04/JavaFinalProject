@@ -21,7 +21,7 @@ jobs:
         run: |
           jpackage `
             --input target `
-            --main-jar your-app-1.0-SNAPSHOT.jar `
+            --main-jar mp3-player-1.0-SNAPSHOT.jar `
             --main-class com.example.Main `
             --name "MP3 Player" `
             --type exe `
