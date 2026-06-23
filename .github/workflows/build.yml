@@ -26,6 +26,7 @@ jobs:
             --main-class com.example.Main `
             --name "MP3 Player" `
             --type exe `
+            --win-console `
             --add-modules javafx.controls,javafx.media,javafx.fxml
 
       - name: Upload EXE
